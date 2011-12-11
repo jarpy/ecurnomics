@@ -11,3 +11,9 @@ def items(request):
     template = loader.get_template('items/index.html')
     context = Context({'items': items})
     return HttpResponse(template.render(context))
+
+def item(request, class_tsid):
+    items = Auction.objects.filter(class_tsid=class_tsid)
+    template = loader.get_template('item/index.html')
+    context = Context({'items': items})
+    return HttpResponse(template.render(context))
