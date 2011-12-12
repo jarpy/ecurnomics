@@ -9,6 +9,9 @@ import datetime
 class Auction(models.Model):
     auction_code = models.CharField(max_length=64, primary_key=True)
     class_tsid = models.CharField(max_length=64)
+    category = models.CharField(max_length=64)
+    player_tsid = models.CharField(max_length=16)
+    player_name = models.CharField(max_length=64)
     cost = models.IntegerField()
     category = models.CharField(max_length=64)
     created = models.IntegerField()
