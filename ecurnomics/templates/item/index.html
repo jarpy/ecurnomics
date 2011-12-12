@@ -4,20 +4,37 @@
 
     <script type="text/javascript">
 	var chart;
+
+	Highcharts.setOptions({
+		global: {
+			useUTC: false
+		}
+	});
+
 	$(document).ready(function() {
 	   chart = new Highcharts.Chart({
 	      chart: {
-		 renderTo: 'chart_container',
-		 type: 'spline'
+		  renderTo: 'chart_container',
+		  type: 'spline',
+		  zoomType: 'xy'
 	      },
 	      title: {
 		 text: 'List prices for {{ class_tsid }}'
 	      },
 	      subtitle: {
-		 text: 'An example of irregular time data in Highcharts JS'   
+		 text: 'Drag a selection box to zoom in'
 	      },
 	      xAxis: {
-		 type: 'datetime'
+		  type: 'datetime',
+		  dateTimeLabelFormats: { // don't display the dummy year
+		      second: '%H:%M:%S',
+		      minute: '%H:%M',
+		      hour: '%e. %b',
+		      day: '%e, %b',
+		      week: '%e. %b',
+		      month: '%e. %y',
+		      year: '%b'
+		  }
 	      },
 	      yAxis: {
 		 title: {
@@ -27,8 +44,7 @@
 	      },
 	      tooltip: {
 		 formatter: function() {
-			   return '<b>'+ this.series.name +'</b><br/>'+
-		       Highcharts.dateFormat('%e. %b', this.x) +': '+ this.y +' m';
+		     return this.y +' currents/unit';
 		 }
 	      },
 	      series: [{
