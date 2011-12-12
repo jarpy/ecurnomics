@@ -1,0 +1,17 @@
+<head>
+<title>Ecurnomics</title>
+<link rel="stylesheet" type="text/css" media="all" href="http://c1.glitch.bz/css/developer_67510_1318537955.gz.css" />
+</head>
+
+<body>
+    <p><h1>Ecurnomics</h1></p>
+    <h2>All Auctions</h2>
+
+
+    <ul>
+      {% for auction in auctions %}
+        <li><a href="/auctions_for_item/{{ auction.class_tsid }}/">{{ auction.class_tsid }}</a></li>
+      {% endfor %}
+    </ul>
+</body>
+

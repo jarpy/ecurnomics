@@ -1,0 +1,78 @@
+<head>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/js/highcharts.js"></script>
+
+    <script type="text/javascript">
+	var chart;
+
+	Highcharts.setOptions({
+		global: {
+			useUTC: false
+		}
+	});
+
+	$(document).ready(function() {
+	   chart = new Highcharts.Chart({
+	      chart: {
+		  renderTo: 'chart_container',
+		  type: 'spline',
+		  zoomType: 'xy'
+	      },
+	      title: {
+		 text: 'List prices for {{ class_tsid }}'
+	      },
+	      subtitle: {
+		 text: 'Drag a selection box to zoom in'
+	      },
+	      xAxis: {
+		  type: 'datetime',
+		  dateTimeLabelFormats: { // don't display the dummy year
+		      second: '%H:%M:%S',
+		      minute: '%H:%M',
+		      hour: '%e. %b',
+		      day: '%e, %b',
+		      week: '%e. %b',
+		      month: '%e. %y',
+		      year: '%b'
+		  }
+	      },
+	      yAxis: {
+		  title: {
+		      text: 'List price'
+		  },
+		  plotLines: [{
+		      label: 'Average price',
+		      color: '#FFCCCC',
+		      width: 2,
+		      value: {{ average_cost }} }],
+		  min: 0
+	      },
+	      tooltip: {
+		 formatter: function() {
+		     return this.y +' currents/unit';
+		 }
+	      },
+	       series: [{
+		   name: 'List price of {{ class_tsid }}',
+		   data: {{ price_data_as_json }}
+	       }]
+	   });
+	});
+    </script>
+
+
+
+  <link rel="stylesheet" type="text/css" media="all" href="http://c1.glitch.bz/css/developer_67510_1318537955.gz.css" />
+  <title>Ecurnomics</title>
+</head>
+
+<body>
+
+
+    <p><h1>Ecurnomics</h1></p>
+    <div id="chart_container" style="width: 100%; height: 400px"></div>
+    <p>Total units listed: {{ total_count }}</p>
+    <p>Total value of all auctions: {{ total_cost }}</p>
+    <p>Average cost per unit: {{ average_cost }}</p>
+</body>
+
