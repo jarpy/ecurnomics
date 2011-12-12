@@ -25,8 +25,10 @@ def item(request, class_tsid):
     #price_data_as_json = json.dumps([[4782374, 50],[342342134, 489]])
     price_data = []
     for item in items:
-        time_price_datum = [item.created_milliseconds, item.cost]
-        price_data.append(time_price_datum)
+        # Drop high outlyers
+        if not (item.cost > 100 * average_cost):
+            time_price_datum = [item.created_milliseconds, (item.cost / item.count)]
+            price_data.append(time_price_datum)
     price_data_as_json = json.dumps(price_data)
    
     context = Context({'items': items,
