@@ -56,13 +56,5 @@
     <p>Total units listed: {{ total_count }}</p>
     <p>Total value of all auctions: {{ total_cost }}</p>
     <p>Average cost per unit: {{ average_cost }}</p>
-    <ul>
-      {% for item in items %}
-          <li>
-	    <a href="/item/{{ item.class_tsid }}/">{{ item.class_tsid }}</a>
-	      {{ item.unit_cost_fixed_decimal }}
-	  </li>
-      {% endfor %}
-    </ul>
 </body>
 
