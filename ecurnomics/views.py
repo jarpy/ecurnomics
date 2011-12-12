@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.template import Context, loader
 from django.shortcuts import render_to_response
 from django.db.models import Avg,Sum
+import json
 
 
 from ecurnomics.models import Auction
@@ -20,7 +21,12 @@ def item(request, class_tsid):
     total_count = Auction.objects.filter(class_tsid=class_tsid).aggregate(Sum('count'))['count__sum']
     average_cost = total_cost / total_count
     template = loader.get_template('item/index.html')
+
+    price_data_as_json = json.dumps([[4782374, 50],[342342134, 489]])
+    
     context = Context({'items': items,
+                       'class_tsid': class_tsid,
+                       'price_data_as_json': price_data_as_json,
                        'average_cost': average_cost,
                        'total_count': total_count,
                        'total_cost': total_cost})
