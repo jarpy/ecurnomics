@@ -19,7 +19,7 @@ def item(request, class_tsid):
     items = Auction.objects.filter(class_tsid=class_tsid)
     total_cost = Auction.objects.filter(class_tsid=class_tsid).aggregate(Sum('cost'))['cost__sum']
     total_count = Auction.objects.filter(class_tsid=class_tsid).aggregate(Sum('count'))['count__sum']
-    average_cost = total_cost / total_count
+    average_cost = total_cost / float(total_count)
     template = loader.get_template('item/index.html')
 
     #price_data_as_json = json.dumps([[4782374, 50],[342342134, 489]])
@@ -34,7 +34,7 @@ def item(request, class_tsid):
     context = Context({'items': items,
                        'class_tsid': class_tsid,
                        'price_data_as_json': price_data_as_json,
-                       'average_cost': average_cost,
+                       'average_cost': "%0.1f" % (average_cost),
                        'total_count': total_count,
                        'total_cost': total_cost})
     return HttpResponse(template.render(context))
