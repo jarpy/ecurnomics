@@ -3,6 +3,8 @@
 from django.http import HttpResponse
 from django.template import Context, loader
 from django.shortcuts import render_to_response
+from django.db.models import Avg,Sum
+
 
 from ecurnomics.models import Auction
 
@@ -14,6 +16,12 @@ def items(request):
 
 def item(request, class_tsid):
     items = Auction.objects.filter(class_tsid=class_tsid)
+    total_cost = Auction.objects.filter(class_tsid=class_tsid).aggregate(Sum('cost'))['cost__sum']
+    total_count = Auction.objects.filter(class_tsid=class_tsid).aggregate(Sum('count'))['count__sum']
+    average_cost = total_cost / total_count
     template = loader.get_template('item/index.html')
-    context = Context({'items': items})
+    context = Context({'items': items,
+                       'average_cost': average_cost,
+                       'total_count': total_count,
+                       'total_cost': total_cost})
     return HttpResponse(template.render(context))

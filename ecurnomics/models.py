@@ -21,3 +21,7 @@ class Auction(models.Model):
 
     def __unicode__(self):
         return "%s %s at %s (%.2f/unit)" % (self.count, self.class_tsid, self.cost, self.unit_cost)
+
+    def _get_unit_cost_fixed_decimal(self):
+        return "%.2f" % (self.unit_cost)
+    unit_cost_fixed_decimal = property(_get_unit_cost_fixed_decimal)
