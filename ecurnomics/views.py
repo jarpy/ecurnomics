@@ -31,12 +31,8 @@ def auctions_for_item(request, class_tsid):
             price_data.append(time_price_datum)
     price_data_as_json = json.dumps(price_data)
 
-    # Try to look up the fancy, human name for the item
-    # but fall back to the class_tsid if we don't have it.
-    try:
-        item_label = auctions[0].item.name_plural
-    except:
-        item_label = class_tsid
+
+    item_label = auctions[0].item.name_plural
     context = Context({'auctions': auctions,
                        'item_label': item_label,
                        'price_data_as_json': price_data_as_json,
