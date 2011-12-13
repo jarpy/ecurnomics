@@ -19,7 +19,7 @@
 		  zoomType: 'xy'
 	      },
 	      title: {
-		 text: 'List prices for {{ class_tsid }}'
+		 text: 'List price for {{ item_label }}'
 	      },
 	      subtitle: {
 		 text: 'Drag a selection box to zoom in'
@@ -53,7 +53,7 @@
 		 }
 	      },
 	       series: [{
-		   name: 'List price of {{ class_tsid }}',
+		   name: 'Price',
 		   data: {{ price_data_as_json }}
 	       }]
 	   });
