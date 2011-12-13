@@ -10,13 +10,13 @@ import json
 from ecurnomics.models import Auction
 from ecurnomics.models import Item
 
-def auctions(request):
+def list_items(request):
     items = Item.objects.all().order_by('name_single')
     template = loader.get_template('auctions/index.html')
     context = Context({'items': items})
     return HttpResponse(template.render(context))
 
-def auctions_for_item(request, class_tsid):
+def prices_for_item(request, class_tsid):
     auctions = Auction.objects.filter(class_tsid=class_tsid)
     total_cost = Auction.objects.filter(class_tsid=class_tsid).aggregate(Sum('cost'))['cost__sum']
     total_count = Auction.objects.filter(class_tsid=class_tsid).aggregate(Sum('count'))['count__sum']
