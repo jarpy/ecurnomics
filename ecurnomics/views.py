@@ -40,3 +40,10 @@ def prices_for_item(request, class_tsid):
                        'total_count': total_count,
                        'total_cost': total_cost})
     return HttpResponse(template.render(context))
+
+def search(request, search_term):
+    found_items = Item.objects.filter(name_single__icontains=search_term)
+    template = loader.get_template('search/index.html')
+    context = Context({'found_items': found_items, 'search_term': search_term})
+    return HttpResponse(template.render(context))
+    

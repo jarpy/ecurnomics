@@ -14,7 +14,9 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
+
     (r'^$', 'ecurnomics.views.list_items'),
     (r'^auctions/', 'ecurnomics.views.list_items'),
     (r'^prices_for_item/(?P<class_tsid>[^/]+)', 'ecurnomics.views.prices_for_item'),
+    (r'^search/(?P<search_term>[^/]+)', 'ecurnomics.views.search'),
 )
