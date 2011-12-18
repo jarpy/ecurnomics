@@ -4,6 +4,8 @@ from django.http import HttpResponse
 from django.template import Context, loader
 from django.shortcuts import render_to_response
 from django.db.models import Avg,Sum
+from django.shortcuts import redirect
+
 import json
 
 
@@ -45,5 +47,18 @@ def search(request, search_term):
     found_items = Item.objects.filter(name_single__icontains=search_term).order_by('name_single')
     template = loader.get_template('search_results.html')
     context = Context({'found_items': found_items, 'search_term': search_term})
+    return HttpResponse(template.render(context))
+
+def search_as_http_get(request):
+    """
+    Somebody sent us "/search?search_term=meat".
+    Redirect them to "/search/meat"
+    """
+    search_term = request.GET['search_term']
+    return redirect("/search/%s" % search_term)
+    
+def home(request):
+    template = loader.get_template('home.html')
+    context = Context()
     return HttpResponse(template.render(context))
     
