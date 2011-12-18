@@ -12,7 +12,7 @@ from ecurnomics.models import Item
 
 def list_items(request):
     items = Item.objects.all().order_by('name_single')
-    template = loader.get_template('auctions/index.html')
+    template = loader.get_template('item_list.html')
     context = Context({'items': items})
     return HttpResponse(template.render(context))
 
@@ -21,7 +21,7 @@ def prices_for_item(request, class_tsid):
     total_cost = Auction.objects.filter(class_tsid=class_tsid).aggregate(Sum('cost'))['cost__sum']
     total_count = Auction.objects.filter(class_tsid=class_tsid).aggregate(Sum('count'))['count__sum']
     average_cost = total_cost / total_count
-    template = loader.get_template('auctions_for_item/index.html')
+    template = loader.get_template('price_graph.html')
 
     price_data = []
     for auction in auctions:
@@ -42,8 +42,8 @@ def prices_for_item(request, class_tsid):
     return HttpResponse(template.render(context))
 
 def search(request, search_term):
-    found_items = Item.objects.filter(name_single__icontains=search_term)
-    template = loader.get_template('search/index.html')
+    found_items = Item.objects.filter(name_single__icontains=search_term).order_by('name_single')
+    template = loader.get_template('search_results.html')
     context = Context({'found_items': found_items, 'search_term': search_term})
     return HttpResponse(template.render(context))
     
