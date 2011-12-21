@@ -1,0 +1,122 @@
+body{
+    background: white;
+}
+
+
+p{
+    text-align: left;
+    font-family:"Verdana";
+    font-size:20px;
+}
+
+h2{
+    text-align: left; 
+    font-family:"Verdana";
+    font-size:18pt;
+    padding-top: 20px;
+    padding-left: 20px;
+    font-family: sans-serif;
+    color: #30619c
+}
+
+a:link {
+    color: #30619c;
+}
+
+a:visited {
+    color: #30619c;
+}
+
+a:hover {
+    color: #30619c;
+    background-color: #e0e0e0;
+    text-decoration: none;
+}
+
+a:active { 
+    color: #333333;
+}
+
+
+ul {
+    list-style-type:none;
+    padding-left: 70px;
+    font-size: pt;
+    color: #30619c;
+    font-family: sans-serif;
+}
+
+#logo_home {
+    text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 151px;
+}
+
+#search_home {
+    text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20px;
+}
+
+#tagline {
+    padding-top: 20px;
+    text-align: center;
+    font-style: italic;
+    font-size: 18pt;
+    color: #808080;
+    font-family: sans-serif; 
+}
+
+#chart_meta_container {
+    text-align: center;
+    width: 95%;
+    height: 550px;
+    padding-top: 30px;
+    margin-left: auto;
+    margin-right: auto;  
+}
+
+#chart_container {
+    text-align: center;
+    width: 95%;
+    height: 500px;
+    padding-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#bob {
+}
+
+#topnav{
+    text-align: center;
+    width: 100%;
+    height: 60px;
+
+    background-image: url("/static/image/top_nav_gradient.png");
+    background-repeat: repeat-x;
+
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+}
+
+#topnav_logo {
+    padding-top: 10px;
+    padding-left: 20px;
+    vertical-align: middle;
+    float: left;
+}
+
+#search_form_topnav_container {
+    padding-top: 18px;
+    margin-right: 20px;
+    text-align: right;
+    vertical-align:middle;
+}
+

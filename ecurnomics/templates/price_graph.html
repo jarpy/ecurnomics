@@ -1,7 +1,6 @@
 <head>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
   <script type="text/javascript" src="/static/js/highcharts.js"></script>
-
     <script type="text/javascript">
 	var chart;
 
@@ -16,10 +15,15 @@
 	      chart: {
 		  renderTo: 'chart_container',
 		  type: 'spline',
-		  zoomType: 'xy'
+		  zoomType: 'xy',
+	          backgroundColor: '#f8f8f8',
+	          borderColor: '#d0d0d0',
+                  borderWidth: '1',
+	          spacingTop: 20,
+	          marginTop: 100
 	      },
 	      title: {
-		 text: 'Prices for {{ item_label }}'
+		 text: '{{ item_label }}'
 	      },
 	      subtitle: {
 		 text: 'Drag a selection box to zoom in'
@@ -62,13 +66,15 @@
 
 
 
-  <link rel="stylesheet" type="text/css" media="all" href="http://c1.glitch.bz/css/developer_67510_1318537955.gz.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="/static/css/base.css" />
   <title>Ecurnomics</title>
 </head>
 
 <body>
-    <p><a href='/'><img src='/static/image/logo_large.png'></a></p>
-    <div id="chart_container" style="width: 95%; height: 500px; margin-left: auto; margin-right: auto"></div>
+    {% include 'topnav.html' %}
+    <div id="chart_meta_container">
+      <div id="chart_container"></div>
+    </div>
     <!--<p>Total units listed: {{ total_count }}</p>
     <p>Total value of all auctions: {{ total_cost }}</p>
     <p>Average cost per unit: {{ average_cost }}</p>-->

@@ -1,21 +1,20 @@
 <head>
 <title>Ecurnomics</title>
-<link rel="stylesheet" type="text/css" media="all" href="http://c1.glitch.bz/css/developer_67510_1318537955.gz.css" />
+<link rel="stylesheet" type="text/css" media="all" href="/static/css/base.css" />
 </head>
 
 <body>
-    <p><a href='/'><img src='/static/image/logo_large.png'></a></p>
-    <p><h2>Search results for "{{ search_term }}"</h2></p>
-    <ul>
-        {% if found_items %}
-            {% for item in found_items %}
-                <li><a href="/prices_for_item/{{ item.class_tsid }}"> 
-                    {{ item.name_single }}
-                </a></li>
-            {% endfor %}
-        {% else %}
-	    Nothing found, sorry.
-	{% endif %}
+    {% include 'topnav.html' %}
+    <h2>Search results:</h2>
+    <div class="search_results">
+      <ul>
+        {% for item in found_items %}
+            <li><a href="/prices_for_item/{{ item.class_tsid }}"> 
+            {{ item.name_plural }}
+            </a></li>
+        {% empty %}
+	   Didn't find anything like "{{ search_term }}". Sorry.
+        {% endfor %}
     </ul>
 </body>
 
