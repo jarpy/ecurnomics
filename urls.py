@@ -24,4 +24,7 @@ urlpatterns = patterns('',
 
     # Pretty search in the form "/search/meat"
     (r'^search/(?P<search_term>[^/]+)', 'ecurnomics.views.search'),
+
+    # FavIcon
+    (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/static/image/favicon.ico'}),
 )

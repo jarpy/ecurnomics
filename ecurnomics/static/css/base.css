@@ -1,3 +1,5 @@
+/* http://colorschemedesigner.com/#3B31Tw0w0w0w0 */
+
 body{
     background: white;
 }
@@ -16,7 +18,7 @@ h2{
     padding-top: 20px;
     padding-left: 20px;
     font-family: sans-serif;
-    color: #30619c
+    color: #4186d3
 }
 
 img {
@@ -73,7 +75,7 @@ li {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    padding-top: 20px;
+    padding-top: 30px;
 }
 
 #tagline {
@@ -133,4 +135,43 @@ li {
     text-align: right;
     vertical-align:middle;
 }
+
+
+
+
+
+
+
+
+/*
+
+Sticky Footer by Ryan Fait
+http://ryanfait.com/
+
+*/
+* {
+	margin: 0;
+}
+html, body {
+	height: 100%;
+}
+.wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -80px; /* the bottom margin is the negative value of the footer's height */
+}
+.footer, .push {
+	height: 80px; /* .push must be the same height as .footer */
+	text-align: right;
+	margin-right: 20px;
+}
+
+.footer a {
+    color: #909090;
+    text-decoration: none;
+    font-family: sans-serif;
+    font-size: 8pt;
+}
+
 

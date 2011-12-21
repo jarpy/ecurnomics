@@ -4,6 +4,7 @@
 </head>
 
 <body>
+  <div class="wrapper">
     {% include 'topnav.html' %}
     <h2>Search results:</h2>
     <div class="search_results">
@@ -15,6 +16,10 @@
         {% empty %}
 	   Didn't find anything like "{{ search_term }}". Sorry.
         {% endfor %}
-    </ul>
+      </ul>
+    </div>
+    <div class="push"></div>
+  </div>
+  {% include 'bottom.html' %}
 </body>
 
