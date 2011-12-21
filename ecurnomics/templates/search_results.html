@@ -10,7 +10,7 @@
       <ul>
         {% for item in found_items %}
             <li><a href="/prices_for_item/{{ item.class_tsid }}"> 
-            {{ item.name_plural }}
+            {{ item.name_single }}
             </a></li>
         {% empty %}
 	   Didn't find anything like "{{ search_term }}". Sorry.

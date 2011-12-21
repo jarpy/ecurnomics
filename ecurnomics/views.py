@@ -34,7 +34,7 @@ def prices_for_item(request, class_tsid):
     price_data_as_json = json.dumps(price_data)
 
 
-    item_label = auctions[0].item.name_plural
+    item_label = auctions[0].item.name_single
     context = Context({'auctions': auctions,
                        'item_label': item_label,
                        'price_data_as_json': price_data_as_json,
@@ -45,6 +45,7 @@ def prices_for_item(request, class_tsid):
 
 def search(request, search_term):
     found_items = Item.objects.filter(name_single__icontains=search_term).order_by('name_single')
+    
     template = loader.get_template('search_results.html')
     context = Context({'found_items': found_items, 'search_term': search_term})
     return HttpResponse(template.render(context))

@@ -19,6 +19,16 @@ h2{
     color: #30619c
 }
 
+img {
+    outline: none;
+    border: 0;
+}
+
+a {
+    outline: none;
+}
+
+
 a:link {
     color: #30619c;
 }
@@ -44,6 +54,10 @@ ul {
     font-size: pt;
     color: #30619c;
     font-family: sans-serif;
+}
+
+li {
+    padding-top: 8pt;
 }
 
 #logo_home {
@@ -73,7 +87,7 @@ ul {
 
 #chart_meta_container {
     text-align: center;
-    width: 95%;
+    width: 100%;
     height: 550px;
     padding-top: 30px;
     margin-left: auto;
@@ -82,7 +96,7 @@ ul {
 
 #chart_container {
     text-align: center;
-    width: 95%;
+    width: 90%;
     height: 500px;
     padding-top: 30px;
     margin-left: auto;
