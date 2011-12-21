@@ -5,9 +5,18 @@
 	var chart;
 
 	Highcharts.setOptions({
-		global: {
-			useUTC: false
-		}
+	    global: {
+	        useUTC: false
+	    },
+	    colors: ['#4186d3',
+	             '#50B432',
+                     '#ED561B',
+	             '#DDDF00', 
+	             '#24CBE5',
+	             '#64E572',
+	             '#FF9655',
+	             '#FFF263',
+	             '#6AF9C4']
 	});
 
 	$(document).ready(function() {
@@ -16,17 +25,20 @@
 		  renderTo: 'chart_container',
 		  type: 'spline',
 		  zoomType: 'xy',
-	          backgroundColor: '#f8f8f8',
+	          backgroundColor: '#e9e9e9',
 	          borderColor: '#d0d0d0',
                   borderWidth: '1',
 	          spacingTop: 20,
 	          marginTop: 100
 	      },
 	      title: {
-		 text: '{{ item_label }}'
+		 text: '{{ item_label }} Prices'
 	      },
 	      subtitle: {
 		 text: 'Drag a selection box to zoom in'
+	      },
+	      legend: {
+                 enabled: false
 	      },
 	      xAxis: {
 		  type: 'datetime',
@@ -45,8 +57,12 @@
 		      text: 'List price'
 		  },
 		  plotLines: [{
-		      label: 'Average price',
-		      color: '#FFCCCC',
+		      label: {text: 'Average price',
+	                      align: 'right',
+                              x: -10,
+                              style: {color: '#909090'}
+                      },
+		      color: '#ffd440',
 		      width: 2,
 		      value: {{ average_cost }} }],
 		  min: 0
