@@ -30,20 +30,26 @@ def main():
         for auction in auctions:
             auction_date = datetime.date.fromtimestamp(auction.created)
             try:
-                prices_by_date[auction_date].append(auction.cost)
+                prices_by_date[auction_date].append(auction.unit_cost)
             except KeyError: # We don't have an array for this day yet
-                prices_by_date[auction_date] = [auction.cost,]
+                prices_by_date[auction_date] = [auction.unit_cost,]
         # Calculate the average for each day
         for date in prices_by_date.keys():
-            average_price = sum(prices_by_date[date]) // len(prices_by_date[date])
-            print "%s: %s" % (date, average_price)
+            uncorrected_average_price = sum(prices_by_date[date]) / len(prices_by_date[date])
+            # Build a filtered set of prices with silly high outlyers removed
+            filtered_prices = []
+            for price in prices_by_date[date]:
+                if(price < 50 * uncorrected_average_price):
+                    filtered_prices.append(price)
+            corrected_average_price = sum(filtered_prices) / len(filtered_prices)                 
+            
             try:
                 datum = AveragePrice.objects.get(date=date, class_tsid=item.class_tsid)
             except AveragePrice.DoesNotExist:
                 datum = AveragePrice()
             datum.date = date
             datum.class_tsid = item.class_tsid
-            datum.average_price = average_price
+            datum.average_price = corrected_average_price
             datum.save()
             
     

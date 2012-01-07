@@ -11,6 +11,7 @@ import datetime
 
 from ecurnomics.models import Auction
 from ecurnomics.models import Item
+from ecurnomics.models import AveragePrice
 
 def list_items(request):
     items = Item.objects.all().order_by('name_single')
@@ -19,35 +20,36 @@ def list_items(request):
     return HttpResponse(template.render(context))
 
 def prices_for_item(request, class_tsid):
-    auctions = Auction.objects.filter(class_tsid=class_tsid)
+    auctions = Auction.objects.filter(class_tsid=class_tsid).order_by('-created')[:5000]
     total_cost = Auction.objects.filter(class_tsid=class_tsid).aggregate(Sum('cost'))['cost__sum']
     total_count = Auction.objects.filter(class_tsid=class_tsid).aggregate(Sum('count'))['count__sum']
     average_cost = total_cost / total_count
     template = loader.get_template('price_graph.html')
 
+    # Build the data series for all auctions
+    # One data-point per auction
     price_data = []
-    price_data_daily_averages = {} # Keys are datetimes. They point to an array of prices for each datetime.
-
     for auction in auctions:
         # Drop high outlyers
-        if not (auction.cost > 100 * average_cost):
+        if not (auction.cost > 50 * average_cost):
             # Grab the precise time and price
-            time_price_datum = [auction.created_milliseconds, (auction.cost / auction.count)]
+            time_price_datum = [auction.created_milliseconds, (auction.unit_cost)]
             price_data.append(time_price_datum)
-            # # Add the price to daily averages
-            # auction_date = datetime.date.fromtimestamp(auction.created)
-            # try:
-            #     price_data_daily_averages[auction_date].append(auction.cost)
-            # except KeyError: # We don't have an array for this day yet
-            #    price_data_daily_averages[auction_date] = [auction.cost,]
+    # Render it to JSON that HighCharts can consume
     price_data_as_json = json.dumps(price_data)
-    print price_data_daily_averages
 
+    # Build the data series for daily averages of price
+    daily_average_data = []
+    for daily_average in AveragePrice.objects.filter(class_tsid=class_tsid):
+        time_price_datum = [daily_average.date_milliseconds, daily_average.average_price]
+        daily_average_data.append(time_price_datum)
+    daily_average_data_as_json = json.dumps(daily_average_data)
 
     item_label = auctions[0].item.name_single
     context = Context({'auctions': auctions,
                        'item_label': item_label,
                        'price_data_as_json': price_data_as_json,
+                       'daily_average_data_as_json': daily_average_data_as_json,
                        'average_cost': "%0.1f" % (average_cost),
                        'total_count': total_count,
                        'total_cost': total_cost})
