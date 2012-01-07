@@ -7,7 +7,7 @@ from django.db.models import Avg,Sum
 from django.shortcuts import redirect
 
 import json
-
+import datetime
 
 from ecurnomics.models import Auction
 from ecurnomics.models import Item
@@ -26,12 +26,22 @@ def prices_for_item(request, class_tsid):
     template = loader.get_template('price_graph.html')
 
     price_data = []
+    price_data_daily_averages = {} # Keys are datetimes. They point to an array of prices for each datetime.
+
     for auction in auctions:
         # Drop high outlyers
         if not (auction.cost > 100 * average_cost):
+            # Grab the precise time and price
             time_price_datum = [auction.created_milliseconds, (auction.cost / auction.count)]
             price_data.append(time_price_datum)
+            # # Add the price to daily averages
+            # auction_date = datetime.date.fromtimestamp(auction.created)
+            # try:
+            #     price_data_daily_averages[auction_date].append(auction.cost)
+            # except KeyError: # We don't have an array for this day yet
+            #    price_data_daily_averages[auction_date] = [auction.cost,]
     price_data_as_json = json.dumps(price_data)
+    print price_data_daily_averages
 
 
     item_label = auctions[0].item.name_single
