@@ -20,10 +20,10 @@ def list_items(request):
     return HttpResponse(template.render(context))
 
 def prices_for_item(request, class_tsid):
-    auctions = Auction.objects.filter(class_tsid=class_tsid).order_by('-created')[:5000]
-    total_cost = Auction.objects.filter(class_tsid=class_tsid).aggregate(Sum('cost'))['cost__sum']
-    total_count = Auction.objects.filter(class_tsid=class_tsid).aggregate(Sum('count'))['count__sum']
-    average_cost = total_cost / total_count
+    auctions = Auction.objects.filter(class_tsid=class_tsid).order_by('-created')#[:5000]
+    sum_unit_cost = Auction.objects.filter(class_tsid=class_tsid).aggregate(Sum('unit_cost'))['unit_cost__sum']
+    auction_count = Auction.objects.filter(class_tsid=class_tsid).count()
+    average_unit_cost = sum_unit_cost / auction_count
     template = loader.get_template('price_graph.html')
 
     # Build the data series for all auctions
@@ -31,9 +31,9 @@ def prices_for_item(request, class_tsid):
     price_data = []
     for auction in auctions:
         # Drop high outlyers
-        if not (auction.cost > 50 * average_cost):
+        if not (auction.unit_cost > 10 * average_unit_cost):
             # Grab the precise time and price
-            time_price_datum = [auction.created_milliseconds, (auction.unit_cost)]
+            time_price_datum = [auction.created_milliseconds, auction.unit_cost]
             price_data.append(time_price_datum)
     # Render it to JSON that HighCharts can consume
     price_data_as_json = json.dumps(price_data)
@@ -50,9 +50,8 @@ def prices_for_item(request, class_tsid):
                        'item_label': item_label,
                        'price_data_as_json': price_data_as_json,
                        'daily_average_data_as_json': daily_average_data_as_json,
-                       'average_cost': "%0.1f" % (average_cost),
-                       'total_count': total_count,
-                       'total_cost': total_cost})
+                       'average_unit_cost': "%0.2f" % (average_unit_cost),
+                       })
     return HttpResponse(template.render(context))
 
 def search(request, search_term):
@@ -64,7 +63,7 @@ def search(request, search_term):
 
 def search_as_http_get(request):
     """
-    Somebody sent us "/search?search_term=meat".
+    Somebody sent us "/search?search_term=meat"
     Redirect them to "/search/meat"
     """
     search_term = request.GET['search_term']
