@@ -16,7 +16,7 @@ urlpatterns = patterns('',
     # url(r'^admin/', include(admin.site.urls)),
 
     (r'^$', 'ecurnomics.views.home'),
-    (r'^auctions/', 'ecurnomics.views.list_items'),
+    (r'^items/', 'ecurnomics.views.list_items'),
     (r'^prices_for_item/(?P<class_tsid>[^/]+)', 'ecurnomics.views.prices_for_item'),
 
     # Ugly search as a get request with '?search_term=meat' query string
