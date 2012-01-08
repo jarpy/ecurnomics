@@ -21,9 +21,7 @@ def list_items(request):
 
 def prices_for_item(request, class_tsid):
     auctions = Auction.objects.filter(class_tsid=class_tsid).order_by('-created')[:5000]
-    sum_unit_cost = Auction.objects.filter(class_tsid=class_tsid).aggregate(Sum('unit_cost'))['unit_cost__sum']
-    auction_count = Auction.objects.filter(class_tsid=class_tsid).count()
-    average_unit_cost = sum_unit_cost / auction_count
+    average_unit_cost = Item.objects.get(class_tsid=class_tsid).average_unit_cost
     template = loader.get_template('price_graph.html')
 
     # Build the data series for all auctions
@@ -31,7 +29,7 @@ def prices_for_item(request, class_tsid):
     price_data = []
     for auction in auctions:
         # Drop high outlyers
-        if not (auction.unit_cost > 5 * average_unit_cost):
+        if (auction.unit_cost < (5 * average_unit_cost)):
             # Grab the precise time and price
             time_price_datum = [auction.created_milliseconds, auction.unit_cost]
             price_data.append(time_price_datum)

@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 from django.db import models
 import time, datetime
+from django.db.models import Avg,Sum
 
 # Create your models here.
 
@@ -19,6 +20,15 @@ class Item(models.Model):
 
     def __unicode__(self):
         return self.name_single
+
+    def _get_average_unit_cost(self):
+        sum_unit_cost = Auction.objects.filter(class_tsid=self.class_tsid).aggregate(Sum('unit_cost'))['unit_cost__sum']
+        auction_count = Auction.objects.filter(class_tsid=self.class_tsid).count()
+        return sum_unit_cost / auction_count
+
+    average_unit_cost = property(_get_average_unit_cost)
+                
+        
 
 class Auction(models.Model):
     auction_code = models.CharField(max_length=64, primary_key=True)
