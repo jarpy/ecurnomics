@@ -62,11 +62,19 @@
 	      series: [{
 	           name: 'Prices',
 	           type: 'scatter',
+	           color: 'rgba(36, 203, 229, .4)',
 		   data: {{ price_data_as_json }}
 	       },{
 	           name: 'Daily Average',
-                   data: {{ daily_average_data_as_json }}
-	       }]
+                   color: '#4186d3',
+	           data: {{ daily_average_data_as_json }}
+	       },{
+	           name: 'Tool Vendor ({{ vendor_buy_price }})',
+	           color: 'rgba(100, 229, 114, 0.7)',
+	           width: '1',
+	           enabled: 'false',
+                   data: {{ vendor_buy_price_data_as_json }}
+               }]
 	   });
 	});
     </script>

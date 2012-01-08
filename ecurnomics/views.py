@@ -3,7 +3,7 @@
 from django.http import HttpResponse
 from django.template import Context, loader
 from django.shortcuts import render_to_response
-from django.db.models import Avg,Sum
+from django.db.models import Avg,Sum,Min,Max
 from django.shortcuts import redirect
 
 import json
@@ -43,12 +43,27 @@ def prices_for_item(request, class_tsid):
         daily_average_data.append(time_price_datum)
     daily_average_data_as_json = json.dumps(daily_average_data)
 
+    # Build a horizontal line with two points showing the vendor buy price
+    #earliest_auction_time = Auction.objects.filter(class_tsid=class_tsid).aggregate(Min('created_milliseconds'))['created_milliseconds__min']
+    earliest_auction_time = daily_average_data[0][0] #Start of the day of the first auction
+    latest_auction_time = Auction.objects.filter(class_tsid=class_tsid).aggregate(Max('created_milliseconds'))['created_milliseconds__max']
+    print earliest_auction_time
+    vendor_buy_price = Item.objects.get(class_tsid=class_tsid).base_cost * 0.80
+    vendor_buy_price_data = [
+                                [earliest_auction_time, vendor_buy_price],
+                                [latest_auction_time, vendor_buy_price]
+                            ]
+    vendor_buy_price_data_as_json = json.dumps(vendor_buy_price_data)
+    
+
     item_label = auctions[0].item.name_single
     context = Context({'auctions': auctions,
                        'item_label': item_label,
                        'price_data_as_json': price_data_as_json,
                        'daily_average_data_as_json': daily_average_data_as_json,
                        'average_unit_cost': "%0.2f" % (average_unit_cost),
+                       'vendor_buy_price_data_as_json': vendor_buy_price_data_as_json,
+                       'vendor_buy_price': vendor_buy_price
                        })
     return HttpResponse(template.render(context))
 
