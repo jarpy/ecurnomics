@@ -5,6 +5,7 @@
 import sys
 import os
 import datetime
+import time
 
 
 def setup_environment():
@@ -51,6 +52,9 @@ def main():
             datum.class_tsid = item.class_tsid
             datum.average_price = corrected_average_price
             datum.save()
+	# Back off and let some other procs run
+	print "Sleeping..."
+	time.sleep(5)
             
     
 
