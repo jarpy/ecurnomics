@@ -32,14 +32,14 @@ def main():
             try:
                 prices_by_date[auction_date].append(auction.unit_cost)
             except KeyError: # We don't have an array for this day yet
-                prices_by_date[auction_date] = [auction.unit_cost,]
+                prices_by_date[auction_date] = [auction.unit_cost]
         # Calculate the average for each day
         for date in prices_by_date.keys():
             uncorrected_average_price = sum(prices_by_date[date]) / len(prices_by_date[date])
             # Build a filtered set of prices with silly high outlyers removed
             filtered_prices = []
             for price in prices_by_date[date]:
-                if(price < 50 * uncorrected_average_price):
+                if(price < (5 * uncorrected_average_price)):
                     filtered_prices.append(price)
             corrected_average_price = sum(filtered_prices) / len(filtered_prices)                 
             
