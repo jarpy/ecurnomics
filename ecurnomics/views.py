@@ -20,7 +20,7 @@ def list_items(request):
     return HttpResponse(template.render(context))
 
 def prices_for_item(request, class_tsid):
-    auctions = Auction.objects.filter(class_tsid=class_tsid).order_by('-created')[:5000]
+    auctions = Auction.objects.filter(class_tsid=class_tsid).order_by('-created')[:2000]
     average_unit_cost = Item.objects.get(class_tsid=class_tsid).average_unit_cost
     template = loader.get_template('price_graph.html')
 
