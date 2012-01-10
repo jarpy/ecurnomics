@@ -5,6 +5,7 @@
 import sys
 import os
 import datetime
+import time
 
 
 def setup_environment():
@@ -39,7 +40,7 @@ def main():
             # Build a filtered set of prices with silly high outlyers removed
             filtered_prices = []
             for price in prices_by_date[date]:
-                if(price < 50 * uncorrected_average_price):
+                if(price < (5 * uncorrected_average_price)):
                     filtered_prices.append(price)
             corrected_average_price = sum(filtered_prices) / len(filtered_prices)                 
             
@@ -51,6 +52,9 @@ def main():
             datum.class_tsid = item.class_tsid
             datum.average_price = corrected_average_price
             datum.save()
+	# Back off and let some other procs run
+	print "Sleeping..."
+	time.sleep(5)
             
     
 
