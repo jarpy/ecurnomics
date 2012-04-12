@@ -48,7 +48,7 @@ def prices_for_item(request, class_tsid):
     earliest_auction_time = daily_average_data[0][0] #Start of the day of the first auction
     latest_auction_time = Auction.objects.filter(class_tsid=class_tsid).aggregate(Max('created_milliseconds'))['created_milliseconds__max']
     print earliest_auction_time
-    vendor_buy_price = Item.objects.get(class_tsid=class_tsid).base_cost * 0.80
+    vendor_buy_price = round(Item.objects.get(class_tsid=class_tsid).base_cost * 0.75)
     vendor_buy_price_data = [
                                 [earliest_auction_time, vendor_buy_price],
                                 [latest_auction_time, vendor_buy_price]

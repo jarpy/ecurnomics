@@ -25,6 +25,7 @@ def main():
     items = Item.objects.all().order_by('name_single')
     for item in items:
         print "Calculating daily averages for %s" % item
+	start_time = int(time.time())
         # Clear out everything
         AveragePrice.objects.filter(class_tsid=item.class_tsid).delete()
         auctions = Auction.objects.filter(class_tsid=item.class_tsid)
@@ -45,7 +46,7 @@ def main():
                 if(price < (5 * average_unit_cost)):
                     filtered_prices.append(price)
                 else:
-                    print "Dropped outragous auction of %s becuase %s is way more than %s" % (item.name_single, price, item.average_unit_cost)
+                    print "Dropped outragous auction of %s becuase %s is way more than %s" % (item.name_single, price, average_unit_cost)
             try:
                 datum = AveragePrice.objects.get(date=date, class_tsid=item.class_tsid)
             except AveragePrice.DoesNotExist:
@@ -59,8 +60,10 @@ def main():
             except ZeroDivisionError:
                 print "No auctions for %s on %s" % (item.name_single, date)
 	# Back off and let some other procs run
-	print "Sleeping..."
-	time.sleep(5)
+	time_to_process = int(time.time()) - start_time 
+	time_to_sleep = max(5, time_to_process*2)
+	print "Took %s seconds.  Sleeping for %s..." % (time_to_process, time_to_sleep)
+	time.sleep(time_to_sleep)
                 
 
 if __name__ == '__main__':
