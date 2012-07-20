@@ -137,6 +137,14 @@ li {
 }
 
 
+#motd {
+    color: #909090;
+    text-decoration: none;
+    text-align: center;
+    font-family: sans-serif;
+    font-size: 12pt;
+}
+
 
 
 

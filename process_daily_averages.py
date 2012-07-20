@@ -6,6 +6,7 @@ import sys
 import os
 import datetime
 import time
+import re
 
 
 def setup_environment():
@@ -25,7 +26,7 @@ def main():
     items = Item.objects.all().order_by('name_single')
     for item in items:
         print "Calculating daily averages for %s" % item
-	start_time = int(time.time())
+        start_time = int(time.time())
         # Clear out everything
         AveragePrice.objects.filter(class_tsid=item.class_tsid).delete()
         auctions = Auction.objects.filter(class_tsid=item.class_tsid)
@@ -43,7 +44,7 @@ def main():
             # Build a filtered set of prices with silly high outlyers removed
             filtered_prices = []
             for price in prices_by_date[date]:
-                if(price < (5 * average_unit_cost)):
+                if(price < (10 * average_unit_cost)):
                     filtered_prices.append(price)
                 else:
                     print "Dropped outragous auction of %s becuase %s is way more than %s" % (item.name_single, price, average_unit_cost)
@@ -59,12 +60,12 @@ def main():
                 datum.save()
             except ZeroDivisionError:
                 print "No auctions for %s on %s" % (item.name_single, date)
-	# Back off and let some other procs run
-	time_to_process = int(time.time()) - start_time 
-	time_to_sleep = max(5, time_to_process*2)
-	print "Took %s seconds.  Sleeping for %s..." % (time_to_process, time_to_sleep)
-	time.sleep(time_to_sleep)
-                
+        # Back off and let some other procs run
+        time_to_process = int(time.time()) - start_time 
+        time_to_sleep = max(5, time_to_process*2)
+        print "Took %s seconds.  Sleeping for %s..." % (time_to_process, time_to_sleep)
+        time.sleep(time_to_sleep)
+            
 
 if __name__ == '__main__':
     main()

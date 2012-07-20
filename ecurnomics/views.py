@@ -29,7 +29,7 @@ def prices_for_item(request, class_tsid):
     price_data = []
     for auction in auctions:
         # Drop high outlyers
-        if (auction.unit_cost < (5 * average_unit_cost)):
+        if (auction.unit_cost < (10 * average_unit_cost)):
             # Grab the precise time and price
             time_price_datum = [auction.created_milliseconds, auction.unit_cost]
             price_data.append(time_price_datum)
@@ -38,10 +38,14 @@ def prices_for_item(request, class_tsid):
 
     # Build the data series for daily averages of price
     daily_average_data = []
-    for daily_average in AveragePrice.objects.filter(class_tsid=class_tsid):
-        time_price_datum = [daily_average.date_milliseconds, daily_average.average_price]
-        daily_average_data.append(time_price_datum)
+    try:
+        for daily_average in AveragePrice.objects.filter(class_tsid=class_tsid):
+            time_price_datum = [daily_average.date_milliseconds, daily_average.average_price]
+            daily_average_data.append(time_price_datum)
+    except:
+        pass
     daily_average_data_as_json = json.dumps(daily_average_data)
+
 
     # Build a horizontal line with two points showing the vendor buy price
     #earliest_auction_time = Auction.objects.filter(class_tsid=class_tsid).aggregate(Min('created_milliseconds'))['created_milliseconds__min']
